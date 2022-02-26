@@ -1,0 +1,44 @@
+@import 'variables';
+@import 'mixins';
+
+@import 'header-navigation';
+
+.main-header {
+  padding: 20px 0 0 0;
+  display: flex;
+  flex-wrap: wrap;
+
+  @include bp-md() {
+    position: fixed;
+    display: block;
+  }
+
+  a {
+    color: #222;
+  }
+
+  img {
+    flex-basis: 125px;
+    max-width: 125px;
+    margin: 0 14px;
+
+    @include bp-md() {
+      max-width: 200px;
+    }
+  }
+
+  .mobile-menu-link {
+    flex-basis: calc(100% - 181px);
+    text-align: right;
+    align-self: center;
+    text-decoration: none;
+    
+    @include bp-md() {
+      display: none;
+    }
+  }
+
+  .js-is-opened {
+    max-height: 400px;
+  }
+}
