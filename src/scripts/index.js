@@ -1,7 +1,12 @@
+import Masonry from 'masonry-layout';
+import mediumZoom from 'medium-zoom';
+
 import '../styles/index.scss';
 import { domEl, addEvt, toggleClass } from './utils';
+import Inview from './inview';
 
 const mobileNavLink = domEl('.mobile-menu-link');
+const gallery = domEl('.gallery');
 
 const images = [
   {
@@ -75,7 +80,7 @@ const images = [
   {
     path: '/pillows/0017.jpg',
     description: 'Veniam officia fugiat ullamco duis deserunt sint aliqua culpa elit nulla enim labore.'
-  }
+  },
 ];
 
 addEvt(mobileNavLink, 'click', function(e) {
@@ -83,4 +88,58 @@ addEvt(mobileNavLink, 'click', function(e) {
   toggleClass(domEl('nav'), 'js-is-opened');
 });
 
-console.log('webpack starterkit');
+gallery.innerHTML = '<div class="grid-sizer"></div>';
+
+images.filter(i => i.path.includes(document.title)).map((item, index) => {
+  const imageContainer = document.createElement('div');
+  const image = document.createElement('img');
+  const padding = document.createElement('div');
+
+  // image.src = 'http://fpoimg.com/300x250';
+  image.dataset.jsInview = '';
+  image.dataset.index = index;
+  image.dataset.zoomable = '';
+  image.dataset.src = `public/images${item.path}`;
+  imageContainer.className = `img-container item-${index}`;
+  imageContainer.dataset.jsInview = '';
+  padding.appendChild(image);
+
+  imageContainer.appendChild(padding);
+  gallery.appendChild(imageContainer);
+  // galleryGrid.appended( imageContainer );
+});
+
+const inview = new Inview();
+inview.setObserver();
+
+const galleryGrid = new Masonry( gallery, {
+  // options
+  itemSelector: '.img-container',
+  columnWidth: '.grid-sizer',
+  percentPosition: true,
+  stagger: 30,
+});
+
+addEvt(document, 'img.loaded', function() {
+  galleryGrid.layout();
+});
+
+const zoomPaper = mediumZoom('.gallery img', {
+  background: 'rgba(255, 255, 255, 0.75)',
+  margin: 16,
+  template: '#zoom-image-template',
+  container: '[data-zoom-container]',
+});
+
+zoomPaper.on('opened', () => {
+  const closeButton = domEl('[data-zoom-close]');
+  const toggleInfo = domEl('.more-info-btn');
+  const largeImage = domEl('.medium-zoom-image--opened');
+  const contentHolder = domEl('.content');
+  const para = document.createElement('p');
+  
+  toggleInfo.addEventListener('click', () => contentHolder.classList.toggle('js-opened'));
+  closeButton.addEventListener('click', () => zoomPaper.close());
+  para.textContent = images[Number(largeImage.dataset.index)].description;
+  contentHolder.appendChild(para);
+});

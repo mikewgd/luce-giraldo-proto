@@ -30,6 +30,14 @@ module.exports = {
       filename: 'pillows.html',
       template: Path.resolve(__dirname, '../src/pillows.html')
     }),
+    new HtmlWebpackPlugin({
+      filename: 'draperies.html',
+      template: Path.resolve(__dirname, '../src/draperies.html')
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'duvets.html',
+      template: Path.resolve(__dirname, '../src/duvets.html')
+    }),
   ],
   resolve: {
     alias: {

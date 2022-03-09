@@ -17,10 +17,15 @@ export default class Inview {
   observerCallback(entries, observer) {
     entries.forEach(entry => {
       const { isIntersecting, intersectionRatio, target } = entry;
-      console.log(isIntersecting, intersectionRatio, target);
+      // console.log(isIntersecting, intersectionRatio, target);
       if (isIntersecting && intersectionRatio <= 1) {
         if (target.tagName.toLowerCase() === 'img') {
           target.src = target.dataset.src;
+          target.onload = function() {
+            target.classList.add('js-image-loaded');
+            const eventName = new CustomEvent('img.loaded');
+            document.dispatchEvent(eventName);
+          };
         }
         
         target.classList.add('js-inview-loaded');

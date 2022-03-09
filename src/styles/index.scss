@@ -40,7 +40,7 @@ p {
 
 main {
   width: 100%;
-  display: flex;
+  // display: flex;
 
   @include bp-md() {
     width: calc(100% - 228px);
@@ -49,6 +49,7 @@ main {
 
   img {
     max-width: 100%;
+    width: 100%;
   }
 
   .container {
@@ -91,7 +92,106 @@ section {
 }
 
 .gallery {
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+  display: flex;
+  flex-wrap: wrap;
+  
+  .img-container,
+  .grid-sizer {
+    width: 50%;
+    @include bp-md() {
+      width: 33.33%;
+    }
+    
+    div {
+      padding: 4px;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+      min-height: 80px;
+    }
+  }
+}
+
+.lightbox-wrapper {
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+
+  section {
+    flex: 1;
+    height: 100%;
+  }
+}
+
+.lightbox-close {
+  border: 1px solid #000;
+  outline: none;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  position: absolute;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 20px;
+  padding: 4px 10px 4px 0;
+
+  svg {
+    height: 30px;
+  }
+}
+
+.image-container {
+  width: 100%;
+  height: calc(100% - 64px);
+}
+
+.content {
+  position: absolute;
+  background-color: rgba(255, 255, 255, .75);
+  padding: 0 0 20px 0;
+  bottom: 0;
+  z-index: 100;
+  width: 100%;
+  transform: translateY(calc(100% - 42px));
+  transition: transform 150ms ease-in-out;
+
+  &.js-opened {
+    transform: translateY(0);
+
+    .more-info-btn {
+      span:nth-child(1) {
+        display: none;
+      }
+
+      span:nth-child(2) {
+        display: inline;
+      }
+    }
+  }
+
+  .more-info-btn {
+    width: 100%;
+    border: 0;
+    outline: none;
+    line-height: 40px;
+    text-transform: uppercase;
+    background: none;
+    font-weight: bold;
+    font-size: 12px;
+
+    span:nth-child(2) {
+      display: none;
+    }
+  }
+
+  p {
+    margin: 0 20px;
+  }
 }
